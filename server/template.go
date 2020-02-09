@@ -261,7 +261,9 @@ func init() {
 {{- else if eq .GetReview.GetState "changes_requested" }} requested changes on your pull request
 {{- else if eq .GetReview.GetState "commented" }} commented on your pull request
 {{- end }} {{template "reviewRepoPullRequestWithTitle" .}}
+{{- if .Review.GetBody }}
 >{{.Review.GetBody | replaceAllGitHubUsernames}}
+{{- end }}
 `))
 }
 

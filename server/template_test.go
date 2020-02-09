@@ -988,6 +988,25 @@ func TestPullRequestReviewNotification(t *testing.T) {
 		require.Equal(t, expected, actual)
 	})
 
+	t.Run("empty", func(t *testing.T) {
+		expected := `
+[panda](https://github.com/panda) approved your pull request [mattermost-plugin-github#42](https://github.com/mattermost/mattermost-plugin-github/pull/42#issuecomment-123456) - Leverage git-get-head
+`
+
+		actual, err := renderTemplate("pullRequestReviewNotification", &github.PullRequestReviewEvent{
+			Repo:        &repo,
+			PullRequest: &pullRequest,
+			Sender:      &user,
+			Review: &github.PullRequestReview{
+				HTMLURL: sToP("https://github.com/mattermost/mattermost-plugin-github/pull/42#issuecomment-123456"),
+				State:   sToP("approved"),
+				Body:    sToP(""),
+			},
+		})
+		require.NoError(t, err)
+		require.Equal(t, expected, actual)
+	})
+
 	t.Run("changes_requested", func(t *testing.T) {
 		expected := `
 [panda](https://github.com/panda) requested changes on your pull request [mattermost-plugin-github#42](https://github.com/mattermost/mattermost-plugin-github/pull/42#issuecomment-123456) - Leverage git-get-head
